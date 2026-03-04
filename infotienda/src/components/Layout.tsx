@@ -13,32 +13,66 @@ const Layout: React.FC = () => {
     navigate('/login');
   };
 
+  const isAdmin = user?.role === 'ADMIN';
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <header className="flex justify-between items-center px-8 py-4 bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="flex-shrink-0">
-          <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-gray-800">InfoTienda</span>
-          </Link>
+      <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50 shadow-md">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-8 h-20 flex justify-between items-center w-full">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center group">
+              <span className="text-2xl font-bold text-white tracking-wide transition-colors">
+                Info<span className="text-blue-500 group-hover:text-blue-400 transition-colors">Tienda</span>
+              </span>
+            </Link>
+          </div>
+          
+          {/* Navigation Links */}
+          <nav className="flex items-center gap-6 lg:gap-8">
+            <Link to="/" className="text-gray-300 hover:text-white font-medium text-sm tracking-wide transition-colors">
+              Productos
+            </Link>
+
+            {user ? (
+              <>
+                {isAdmin ? (
+                  <Link to="/admin/products/new" className="text-blue-400 hover:text-blue-300 font-medium transition-colors border max-sm:hidden border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 px-4 py-2 rounded-md text-sm flex items-center gap-2 shadow-sm">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    Gestionar Productos
+                  </Link>
+                ) : (
+                  <Link to="/cart" className="text-gray-300 hover:text-blue-400 text-xl transition-all hover:scale-110 flex items-center justify-center p-2 rounded-full hover:bg-gray-800">
+                    <FaShoppingCart />
+                  </Link>
+                )}
+                
+                <div className="h-6 w-px bg-gray-700 hidden sm:block mx-1"></div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="flex flex-col items-end hidden sm:flex">
+                    <span className="text-xs text-gray-500 font-medium">Conectado como</span>
+                    <span className="text-sm text-gray-200 font-semibold">{user.email}</span>
+                  </div>
+                  <button onClick={handleLogout} className="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors bg-gray-800 hover:bg-gray-800/80 px-3 py-2 rounded-md border border-gray-700 hover:border-red-900/50">
+                    <FaSignOutAlt className="text-lg" /> <span className="hidden lg:inline-block text-sm font-medium">Salir</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                
+                <div className="flex items-center gap-3">
+                  <Link to="/login" className="text-gray-300 hover:text-white font-medium text-sm transition-colors py-2 px-3 hover:bg-gray-800 rounded-md">Ingresar</Link>
+                  <Link to="/register" className="text-white bg-blue-600 hover:bg-blue-500 font-medium text-sm transition-colors py-2 px-5 rounded-md shadow-lg shadow-blue-500/20">Registrarse</Link>
+                </div>
+                <Link to="/cart" className="text-gray-300 hover:text-blue-400 text-xl transition-all hover:scale-110 flex items-center justify-center p-2 rounded-full hover:bg-gray-800 mr-2">
+                  <FaShoppingCart />
+                </Link>
+              </>
+            )}
+          </nav>
         </div>
-        <nav className="flex items-center gap-6">
-          {user ? (
-            <>
-              <span className="text-gray-600 font-medium">Hola, {user.email}</span>
-              <button onClick={handleLogout} className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors">
-                <FaSignOutAlt /> Salir
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Login</Link>
-              <Link to="/register" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Register</Link>
-            </>
-          )}
-          <Link to="/cart" className="text-gray-600 hover:text-blue-600 text-xl transition-colors">
-            <FaShoppingCart />
-          </Link>
-        </nav>
       </header>
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 py-8">
         <Outlet />

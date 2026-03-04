@@ -4,7 +4,6 @@ import api from '../services/api';
 interface User {
   email: string;
   role: 'ADMIN' | 'USER';
-  // Add other user fields as needed
 }
 
 interface AuthContextType {
@@ -43,8 +42,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (credentials: any) => {
-    const response = await api.post('/auth/login', credentials);
-    setUser(response.data);
+    await api.post('/auth/login', credentials);
+    await checkAuth(); // Refetch the user state after successful login
   };
 
   const register = async (data: any) => {
