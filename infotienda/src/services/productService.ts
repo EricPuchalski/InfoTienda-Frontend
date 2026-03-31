@@ -1,4 +1,4 @@
-import api from './api';
+import { fetchClient } from './api';
 import type { Product, Category, PageableResponse } from '../types/product';
 
 export interface ProductFilters {
@@ -14,43 +14,45 @@ export interface ProductFilters {
 
 export const productService = {
   getProducts: async (filters: ProductFilters): Promise<PageableResponse<Product>> => {
-    // Clean undefined/empty string filters
     const params = Object.fromEntries(
       Object.entries(filters).filter(([_, v]) => v !== undefined && v !== '')
-    );
-    const response = await api.get('/products', { params });
-    return response.data;
+    ) as Record<string, string>;
+    
+    const searchParams = new URLSearchParams(params);
+    const queryString = searchParams.toString();
+    const endpoint = queryString ? `/products?${queryString}` : '/products';
+
+    const responseData = await fetchClient(endpoint);
+    return responseData;
   },
 
   getCategories: async (): Promise<Category[]> => {
-    const response = await api.get('/categories');
-    // Assuming backend returns a list of categories directly or inside content if paginated
-    // Adjust if necessary
-    if (response.data.content) {
-        return response.data.content;
+    const responseData = await fetchClient('/categories');
+    if (responseData.content) {
+        return responseData.content;
     }
-    return response.data;
+    return responseData;
+  },
+
+  getProductById: async (id: string | number): Promise<Product> => {
+    return fetchClient(`/products/${id}`);
   },
 
   createProduct: async (productData: any, image: File): Promise<Product> => {
     const formData = new FormData();
     
-    // Add product data as JSON Blob
     formData.append(
       'product', 
       new Blob([JSON.stringify(productData)], { type: 'application/json' })
     );
     
-    // Add image file
     formData.append('image', image);
 
-    const response = await api.post('/products', formData, {
-      headers: {
-        // Let the browser set the boundary for multipart/form-data
-        'Content-Type': 'multipart/form-data',
-      },
+    const responseData = await fetchClient('/products', {
+      method: 'POST',
+      body: formData,
     });
     
-    return response.data;
+    return responseData;
   }
 };

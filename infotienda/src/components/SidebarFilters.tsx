@@ -9,6 +9,7 @@ interface SidebarFiltersProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onSearchSubmit: () => void;
+  hideCategoriesOnMobile?: boolean;
 }
 
 const SidebarFilters: React.FC<SidebarFiltersProps> = ({
@@ -17,7 +18,8 @@ const SidebarFilters: React.FC<SidebarFiltersProps> = ({
   onSelectCategory,
   searchQuery,
   onSearchChange,
-  onSearchSubmit
+  onSearchSubmit,
+  hideCategoriesOnMobile = false
 }) => {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 
@@ -44,19 +46,21 @@ const SidebarFilters: React.FC<SidebarFiltersProps> = ({
         </div>
 
         {/* Mobile Categories Toggle Button */}
-        <button 
-          onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-          className="lg:hidden w-full flex justify-between items-center bg-gray-100 px-4 py-3 rounded-md mb-2 font-semibold text-gray-800 border border-gray-200"
-        >
-          <span>Categorías</span>
-          {isCategoriesOpen ? <FaChevronUp className="text-gray-500" /> : <FaChevronDown className="text-gray-500" />}
-        </button>
+        {!hideCategoriesOnMobile && (
+          <button 
+            onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+            className="lg:hidden w-full flex justify-between items-center bg-gray-100 px-4 py-3 rounded-md mb-2 font-semibold text-gray-800 border border-gray-200"
+          >
+            <span>Categorías</span>
+            {isCategoriesOpen ? <FaChevronUp className="text-gray-500" /> : <FaChevronDown className="text-gray-500" />}
+          </button>
+        )}
 
         {/* Desktop Categories Title */}
         <h2 className="hidden lg:block text-2xl font-semibold text-gray-800 mb-4">Categorías</h2>
 
         {/* Categories List */}
-        <ul className={`${isCategoriesOpen ? 'flex' : 'hidden'} lg:flex flex-col border border-gray-200 rounded-md overflow-hidden bg-white`}>
+        <ul className={`${hideCategoriesOnMobile ? 'hidden lg:flex' : (isCategoriesOpen ? 'flex lg:flex' : 'hidden lg:flex')} flex-col border border-gray-200 rounded-md overflow-hidden bg-white`}>
           <li>
             <button
               onClick={() => {

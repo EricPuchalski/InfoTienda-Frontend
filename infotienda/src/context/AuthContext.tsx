@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../services/api';
+import { fetchClient } from '../services/api';
 
 interface User {
   email: string;
@@ -26,8 +26,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       // Try to fetch current user from backend using the HttpOnly cookie
-      const response = await api.get('/auth/me'); 
-      setUser(response.data);
+      const data = await fetchClient('/auth/me'); 
+      setUser(data);
     } catch (error) {
       // If 401/403 or error, user is not logged in
       console.log('User not authenticated');
@@ -42,18 +42,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (credentials: any) => {
-    await api.post('/auth/login', credentials);
+    await fetchClient('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    });
     await checkAuth(); // Refetch the user state after successful login
   };
 
   const register = async (data: any) => {
-    await api.post('/auth/register', data);
+    await fetchClient('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
   };
 
 
   const logout = async () => {
     try {
-      await api.post('/auth/logout');
+      await fetchClient('/auth/logout', { method: 'POST' });
       setUser(null);
     } catch (error) {
       console.error('Logout failed', error);

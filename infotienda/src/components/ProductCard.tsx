@@ -1,13 +1,29 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Product } from '../types/product';
+import { FiShoppingCart } from 'react-icons/fi';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // TODO: implement Add to Cart logic
+  };
+
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col h-full relative group transform hover:-translate-y-1">
+    <div 
+      onClick={handleCardClick}
+      className="bg-white border-2 border-gray-200 hover:border-blue-400 rounded-2xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col h-full relative group transform hover:-translate-y-1 cursor-pointer"
+    >
       {/* Stock Badge */}
       <div className="absolute top-4 left-4 z-10">
         <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm backdrop-blur-md ${
@@ -37,32 +53,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
       </div>
 
-      <div className="p-6 flex flex-col flex-1 bg-gradient-to-b from-white to-gray-50/50">
+      <div className="p-5 flex flex-col flex-1 bg-white border-t-2 border-gray-100">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors mt-2">
+          <h3 className="text-base font-bold text-gray-800 mb-1 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
             {product.name}
           </h3>
         </div>
         
-        <div className="mt-6">
-          <div className="flex items-end justify-between mb-5">
+        <div className="mt-4">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <div className="text-2xl font-black text-gray-900 tracking-tight">
+              <div className="text-3xl font-black text-blue-600 tracking-tight">
                 ${product.price ? product.price.toLocaleString('es-AR', { minimumFractionDigits: 2 }) : '0.00'}
               </div>
             </div>
           </div>
           
           <button 
+            onClick={handleAddToCart}
             disabled={product.stockQuantity <= 0}
-            className="w-full bg-gray-900 hover:bg-black text-white px-6 py-3.5 rounded-xl font-bold transition-all shadow-md hover:shadow-xl hover:shadow-gray-900/20 active:scale-[0.98] disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 group/btn"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-xl hover:shadow-blue-600/20 active:scale-[0.98] disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 group/btn border border-blue-600 disabled:border-transparent"
           >
             {product.stockQuantity > 0 ? (
               <>
-                Agregar al Carrito
-                <svg className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                </svg>
+                Agregar al carrito
+                <FiShoppingCart className="w-5 h-5 group-hover/btn:scale-110 group-hover/btn:-translate-y-0.5 transition-transform" />
               </>
             ) : (
               'Sin Stock'

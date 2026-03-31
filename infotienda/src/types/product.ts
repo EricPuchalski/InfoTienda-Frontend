@@ -12,7 +12,7 @@ export interface Product {
   stockQuantity: number;
   active: boolean;
   imageUrl?: string;
-  category: Category;
+  categoryName: string;
 }
 
 export interface PageableResponse<T> {

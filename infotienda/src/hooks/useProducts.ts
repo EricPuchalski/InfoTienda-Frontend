@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { productService } from '../services/productService';
 import type { Product, Category } from '../types/product';
 
 export const useProducts = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   
@@ -10,8 +14,8 @@ export const useProducts = () => {
   const size = 12; 
   const [sortBy, setSortBy] = useState('price');
   const [sortDir, setSortDir] = useState('asc');
-  const [name, setName] = useState('');
-  const [categoryName, setCategoryName] = useState<string | undefined>(undefined);
+  const [name, setName] = useState(searchParams.get('search') || '');
+  const [categoryName, setCategoryName] = useState<string | undefined>(searchParams.get('category') || undefined);
   const [totalPages, setTotalPages] = useState(0);
   
   const [loading, setLoading] = useState(false);
