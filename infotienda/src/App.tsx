@@ -5,18 +5,22 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailsPage from './pages/ProductDetailsPage';
+import CartPage from './pages/CartPage';
 import AdminRoute from './components/AdminRoute';
 import AdminAddProductPage from './pages/AdminAddProductPage';
+import { CartProvider } from './context/CartContext';
 import './App.css'; 
 
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<ProductsPage />} />
             <Route path="product/:id" element={<ProductDetailsPage />} />
+            <Route path="cart" element={<CartPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
             
@@ -26,8 +30,9 @@ function App() {
             </Route>
 
           </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
     </AuthProvider>
   );
 }

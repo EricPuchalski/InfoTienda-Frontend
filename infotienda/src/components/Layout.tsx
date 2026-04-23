@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { FaShoppingCart, FaSignOutAlt } from 'react-icons/fa';
 import Footer from './Footer';
 
 const Layout: React.FC = () => {
   const { user, logout } = useAuth();
+  const { cart } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -42,8 +44,13 @@ const Layout: React.FC = () => {
                     Gestionar Productos
                   </Link>
                 ) : (
-                  <Link to="/cart" className="text-gray-300 hover:text-blue-400 text-xl transition-all hover:scale-110 flex items-center justify-center p-2 rounded-full hover:bg-gray-800">
+                  <Link to="/cart" className="text-gray-300 hover:text-blue-400 text-xl transition-all hover:scale-110 flex items-center justify-center p-2 rounded-full hover:bg-gray-800 relative">
                     <FaShoppingCart />
+                    {cart && cart.items.length > 0 && (
+                      <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-gray-900">
+                        {cart.items.length}
+                      </span>
+                    )}
                   </Link>
                 )}
                 
@@ -66,8 +73,13 @@ const Layout: React.FC = () => {
                   <Link to="/login" className="text-gray-300 hover:text-white font-medium text-sm transition-colors py-2 px-3 hover:bg-gray-800 rounded-md">Ingresar</Link>
                   <Link to="/register" className="text-white bg-blue-600 hover:bg-blue-500 font-medium text-sm transition-colors py-2 px-5 rounded-md shadow-lg shadow-blue-500/20">Registrarse</Link>
                 </div>
-                <Link to="/cart" className="text-gray-300 hover:text-blue-400 text-xl transition-all hover:scale-110 flex items-center justify-center p-2 rounded-full hover:bg-gray-800 mr-2">
+                <Link to="/cart" className="text-gray-300 hover:text-blue-400 text-xl transition-all hover:scale-110 flex items-center justify-center p-2 rounded-full hover:bg-gray-800 relative mr-2">
                   <FaShoppingCart />
+                  {cart && cart.items.length > 0 && (
+                    <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-gray-900">
+                      {cart.items.length}
+                    </span>
+                  )}
                 </Link>
               </>
             )}

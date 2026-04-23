@@ -31,12 +31,28 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
       headers.set('X-XSRF-TOKEN', token);
     }
 
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       ...options,
       method,
       headers,
       credentials: 'include',
     });
+
+    // Handle token expiration/rotation automatically (e.g., after login)
+    if (response.status === 403 && !SAFE_METHODS.has(method)) {
+      csrfTokenCache = null; // Invalidate cache
+      const newToken = await getCsrfToken();
+      if (newToken) {
+        headers.set('X-XSRF-TOKEN', newToken);
+      }
+      // Retry once with the fresh token
+      response = await fetch(url, {
+        ...options,
+        method,
+        headers,
+        credentials: 'include',
+      });
+    }
 
     if (!response.ok) {
       let errorMessage = `HTTP error! status: ${response.status}`;

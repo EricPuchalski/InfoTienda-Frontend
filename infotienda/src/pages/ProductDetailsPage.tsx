@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SidebarFilters from '../components/SidebarFilters';
 import { productService } from '../services/productService';
+import { useCart } from '../context/CartContext';
 import type { Product, Category } from '../types/product';
 import { FiShoppingCart, FiArrowLeft } from 'react-icons/fi';
 
 const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   
   const [product, setProduct] = useState<Product | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -105,6 +107,7 @@ const ProductDetailsPage: React.FC = () => {
                 </div>
                 
                 <button 
+                  onClick={() => addToCart(product.id, 1)}
                   disabled={product.stockQuantity <= 0}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-md flex items-center justify-center gap-3 disabled:bg-gray-200 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed"
                 >

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import type { Product } from '../types/product';
 import { FiShoppingCart } from 'react-icons/fi';
 
@@ -9,14 +10,19 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   const handleCardClick = () => {
     navigate(`/product/${product.id}`);
   };
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    // TODO: implement Add to Cart logic
+    try {
+      await addToCart(product.id, 1);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
