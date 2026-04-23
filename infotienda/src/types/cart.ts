@@ -29,3 +29,30 @@ export interface MergeCartRequest {
     quantity: number;
   }[];
 }
+
+export type DeliveryMethod = 'SHIPPING' | 'PICKUP';
+
+export interface ShippingAddress {
+  street: string;
+  number: string;
+  apartment?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  reference?: string;
+}
+
+export interface CheckoutRequest {
+  deliveryMethod: DeliveryMethod;
+  shippingAddress?: ShippingAddress;
+  pickupStoreName?: string;
+  receiverName?: string;
+}
+
+export interface CheckoutResponse {
+  id: number;
+  orderNumber: string;
+  totalAmount: number;
+  status: string;
+}

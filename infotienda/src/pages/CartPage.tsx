@@ -169,7 +169,10 @@ const CartPage: React.FC = () => {
               </div>
             </div>
             
-            <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4 rounded-xl shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
+            <button 
+              onClick={() => navigate('/checkout')}
+              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4 rounded-xl shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
+            >
               Finalizar Compra
             </button>
             <p className="text-center text-xs text-gray-400 mt-4 flex items-center justify-center gap-2">

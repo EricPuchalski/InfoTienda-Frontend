@@ -1,5 +1,5 @@
 import { fetchClient } from './api';
-import type { CartResponse, AddToCartRequest, UpdateCartItemRequest, MergeCartRequest } from '../types/cart';
+import type { CartResponse, AddToCartRequest, UpdateCartItemRequest, MergeCartRequest, CheckoutRequest, CheckoutResponse } from '../types/cart';
 
 export const cartService = {
   getCart: async (): Promise<CartResponse> => {
@@ -34,6 +34,13 @@ export const cartService = {
 
   mergeCart: async (request: MergeCartRequest): Promise<CartResponse> => {
     return fetchClient('/cart/merge', {
+      method: 'POST',
+      body: JSON.stringify(request),
+    });
+  },
+
+  checkout: async (request: CheckoutRequest): Promise<CheckoutResponse> => {
+    return fetchClient('/checkout', {
       method: 'POST',
       body: JSON.stringify(request),
     });

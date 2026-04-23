@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailsPage from './pages/ProductDetailsPage';
 import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 import AdminRoute from './components/AdminRoute';
 import AdminAddProductPage from './pages/AdminAddProductPage';
 import { CartProvider } from './context/CartContext';
@@ -21,6 +22,7 @@ function App() {
             <Route index element={<ProductsPage />} />
             <Route path="product/:id" element={<ProductDetailsPage />} />
             <Route path="cart" element={<CartPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
             
