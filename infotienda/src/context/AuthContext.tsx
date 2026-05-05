@@ -25,11 +25,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const checkAuth = async () => {
     setIsLoading(true);
     try {
-      // Try to fetch current user from backend using the HttpOnly cookie
       const data = await fetchClient('/auth/me'); 
       setUser(data);
     } catch (error) {
-      // If 401/403 or error, user is not logged in
       console.log('User not authenticated');
       setUser(null);
     } finally {
@@ -46,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       method: 'POST',
       body: JSON.stringify(credentials)
     });
-    await checkAuth(); // Refetch the user state after successful login
+    await checkAuth(); 
   };
 
   const register = async (data: any) => {
@@ -63,7 +61,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
     } catch (error) {
       console.error('Logout failed', error);
-      // Force cleanup anyway
       setUser(null);
     }
   };

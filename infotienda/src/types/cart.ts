@@ -31,6 +31,7 @@ export interface MergeCartRequest {
 }
 
 export type DeliveryMethod = 'SHIPPING' | 'PICKUP';
+export type PaymentMethod = 'MERCADO_PAGO' | 'CREDIT_CARD' | 'CASH';
 
 export interface ShippingAddress {
   street: string;
@@ -45,6 +46,7 @@ export interface ShippingAddress {
 
 export interface CheckoutRequest {
   deliveryMethod: DeliveryMethod;
+  paymentMethod: PaymentMethod;
   shippingAddress?: ShippingAddress;
   pickupStoreName?: string;
   receiverName?: string;
@@ -55,4 +57,5 @@ export interface CheckoutResponse {
   orderNumber: string;
   totalAmount: number;
   status: string;
+  mercadoPagoInitPoint?: string;
 }

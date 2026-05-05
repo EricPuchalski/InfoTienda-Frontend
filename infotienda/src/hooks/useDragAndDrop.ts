@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 interface UseDragAndDropOptions {
   onDrop?: (file: File) => void;
   accept?: string;
-  maxSize?: number; // bytes
+  maxSize?: number;
 }
 
 export const useDragAndDrop = ({ onDrop, accept = 'image/*', maxSize = 5 * 1024 * 1024 }: UseDragAndDropOptions = {}) => {
